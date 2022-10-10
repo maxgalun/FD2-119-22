@@ -59,17 +59,21 @@ document.getElementById("create").addEventListener("click", () => {
       const currentDate = new Date();
       time.innerHTML = `${currentDate.toLocaleTimeString("en-GB")}`;
 
-      let hours = currentDate.getHours();
-      if (hours > 12) {
-         hours -= 12;
-      }
-      const mitunes = currentDate.getMinutes();
-      const seconds = currentDate.getSeconds();
       const miliseconds = currentDate.getMilliseconds();
+      const seconds = currentDate.getSeconds() * 1000;
+      const mitunes = currentDate.getMinutes() * 60 * 1000;
 
-      const hoursAngle = (360 / 43200) * (hours * 60 * 60 + seconds);
-      const mitunesAngle = (360 / 3600) * (mitunes * 60 + seconds);
-      const secondsAngle = (360 / 60000) * (seconds * 1000 + miliseconds);
+      let hours =
+         currentDate.getHours() < 12
+            ? currentDate.getHours() * 60 * 60 * 1000
+            : (currentDate.getHours() - 12) * 60 * 60 * 1000;
+
+      const hoursAngle =
+         (360 / 12 / 60 / 60 / 1000) *
+         (hours + mitunes + seconds + miliseconds);
+      const mitunesAngle =
+         (360 / 60 / 60 / 1000) * (mitunes + seconds + miliseconds);
+      const secondsAngle = (360 / 60 / 1000) * (seconds + miliseconds);
 
       hourHand.style.transform = `translate(-20px, -50%) rotateZ(${
          hoursAngle + 270
