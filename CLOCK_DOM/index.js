@@ -5,7 +5,7 @@ const currentDiameter = 400;
 
 const main = document.createElement("div");
 main.innerHTML = `<input type="number" name="diameter" id="diameter" min="${minDiameter}" max="${maxDiameter}" value="${currentDiameter}"/>
-      <input type="button" value="Построить часы" id="create"  />`;
+      <input type="button" value="Построить часы" id="create"/>`;
 app.appendChild(main);
 
 document.getElementById("create").addEventListener("click", () => {
@@ -51,11 +51,16 @@ function createClock() {
    clock.appendChild(secondHand);
    clock.appendChild(dot);
 
+   function animate() {
+      setTime(digitalWatch, hourHand, minuteHand, secondHand);
+      window.requestAnimationFrame(animate);
+   }
+
+   setTime(digitalWatch, hourHand, minuteHand, secondHand);
+
    main.remove();
    app.appendChild(clock);
-   window.requestAnimationFrame(
-      setTime.bind(this, digitalWatch, hourHand, minuteHand, secondHand)
-   );
+   window.requestAnimationFrame(animate);
 }
 
 function posDigit(digit, angle, diameter) {
@@ -97,8 +102,4 @@ function setTime(digitalWatch, hourHand, minuteHand, secondHand) {
    secondHand.style.transform = `translate(-10px, -50%) rotateZ(${
       secondsAngle + 270
    }deg)`;
-
-   window.requestAnimationFrame(
-      setTime.bind(this, digitalWatch, hourHand, minuteHand, secondHand)
-   );
 }
