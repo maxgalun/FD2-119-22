@@ -8,12 +8,15 @@ class Snake {
          speed: 10,
       };
 
-      this.cell = {}; //параметыр ячейки змейки
+      this.cell = {}; //параметр ячейки змейки
       this.getCell(this.root.offsetWidth, this.root.offsetHeight);
 
       this.canvas = document.createElement("canvas");
       this.getCanvasSize(this.root.offsetWidth, this.root.offsetHeight);
       this.context = this.canvas.getContext("2d");
+
+      this.field = {};
+      this.getField();
 
       this.startAnimationTime; //время начала анимации
 
@@ -73,6 +76,13 @@ class Snake {
    getCanvasSize(width, height) {
       this.canvas.width = Math.floor(width / this.cell.size) * this.cell.size;
       this.canvas.height = Math.floor(height / this.cell.size) * this.cell.size;
+   }
+
+   getField() {
+      this.field.x = 0;
+      this.field.y = this.cell.size * 2;
+      this.field.width = this.canvas.width;
+      this.field.height = this.canvas.height - this.cell.size * 2;
    }
 
    getRandomInteger(min, max) {
@@ -139,7 +149,8 @@ class Snake {
             return element.x === x && element.y === y;
          })
       );
-      color = "#0095DD";
+
+      color = "chocolate";
       this.walls.push({ x, y, color });
    }
 
@@ -158,6 +169,7 @@ class Snake {
 
    drawField() {
       this.context.fillStyle = "#545454";
+
       this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
       this.context.fillStyle = "#646464";
